@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/index.css">
+    <title>Lab 3</title>
+</head>
+<body>
+<div class="content-container">
+    <div>
+        <textarea rows="20" cols="70" id="input"></textarea>
+    </div>
+    <div>
+        <button id="change-button">Swap</button>
+    </div>
+    <div>
+        <textarea rows="20" cols="70" id="output"></textarea>
+    </div>
+</div>
+
+
+<div class="main-container">
+    <p>Input or generate your key...</p>
+    <div class="input-key-container">
+        <div>
+            <label>Super Increasing Sequence: </label>
+            <input id="seq" type="text">
+        </div>
+        <div>
+            <label>Mod: </label>
+            <input id="mod" type="text">
+        </div>
+        <div>
+            <label>Multiplier: </label>
+            <input id="mul" type="text">
+        </div>
+        <div>
+            <button id="input-key-button">Input</button>
+        </div>
+    </div>
+    <div class="generate-key-container">
+        <div>
+            <label>Amount of elements in SIS: </label><input id="n">
+        </div>
+        <div>
+            <button id="generate-key-button">Generate</button>
+        </div>
+
+    </div>
+    <p>Choose operation type and submit!</p>
+    <div class="config-container">
+        <div class="operation-select">
+            <label>Choose operation:</label>
+            <select id="select-operation">
+                <option value="en">Encrypt</option>
+                <option value="dec">Decrypt</option>
+            </select>
+        </div>
+        <div class="submit-button">
+            <button id="submit-button">Submit</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="render.js"></script>
+</body>
+</html>
