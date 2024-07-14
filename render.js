@@ -6,6 +6,15 @@ const isNotValidComponent = function (value) {
 
 const getIntegerValue = (element) => Number.parseInt(element.val());
 
+const setAlert = function (alert, isSuccess) {
+
+  $('body').prepend(`<div class="alert ${isSuccess && 'success-alert'}"><div>${alert}</div></div>`);
+}
+
+const removeAlert = function () {
+  $('.alert').remove();
+}
+
 $(document).ready(() => {
   const submitButton = $("#submit-button");
   const changeButton = $("#change-button");
@@ -14,6 +23,7 @@ $(document).ready(() => {
   const inputButton = $("#input-key-button");
 
   inputButton.click(() => {
+    localStorage.clear()
     const privateKey = $("#seq")
       .val()
       .split(" ")
@@ -21,15 +31,18 @@ $(document).ready(() => {
         return Number.parseInt(element);
       });
     if (isNotValidComponent(privateKey)) {
-      return alert("Seq-value must consist only of natural integers!");
+      setAlert("Seq-value must consist only of natural integers!");
+      return setTimeout(removeAlert, 3000);
     }
     const mod = getIntegerValue($("#mod"));
     if (isNotValidComponent(mod)) {
-      return alert("Mod-value must consist only of integers!");
+      setAlert("Mod-value must consist only of integers!");
+      return setTimeout(removeAlert, 3000);
     }
     const multiplier = getIntegerValue($("#mul"));
-    if (isNotValidComponent(mul)) {
-      return alert("Multiplier-value must consist only of integers!");
+    if (isNotValidComponent(multiplier)) {
+      setAlert("Multiplier-value must consist only of integers!");
+      return setTimeout(removeAlert, 3000);
     }
 
     localStorage.setItem(
@@ -43,25 +56,32 @@ $(document).ready(() => {
   window.electronAPI.getInputKey((value) => {
     const { message, publicKey } = value;
     if (message) {
-      alert(message);
-      return;
+      setAlert(message);
+      return setTimeout(removeAlert, 3000);
     }
 
     const key = JSON.parse(localStorage.getItem("key"));
     key["publicKey"] = publicKey;
     localStorage.setItem("key", JSON.stringify(key));
+    setAlert("Key was successfully assigned!", true);
+    return setTimeout(removeAlert, 3000);
   });
 
   generateButton.click(() => {
+    localStorage.clear()
     const n = getIntegerValue($("#n"));
     if (isNotValidComponent(n) || n < 2) {
-      return alert("N must be natural number!");
+      setAlert("N must be natural number!");
+      return setTimeout(removeAlert, 3000);
     }
     window.electronAPI.generateKey(n);
   });
 
   window.electronAPI.getGeneratedKey((res) => {
     localStorage.setItem("key", JSON.stringify(res));
+    setAlert("Key was successfully generated!", true);
+    return setTimeout(removeAlert, 3000);
+
   });
 
   changeButton.click(() => {
@@ -77,14 +97,24 @@ $(document).ready(() => {
       );
     }
 
-    return alert(
-      "You cannot execute this command when one of the fields is empty!",
+    setAlert(
+        "You cannot execute this command when one of the fields is empty!",
     );
+    return setTimeout(removeAlert, 3000);
   });
 
   submitButton.click(() => {
     if (operationSelect.val() === "en") {
-      const publicKey = JSON.parse(localStorage.getItem("key")).publicKey;
+      const key = localStorage.getItem("key")
+
+      if(!key) {
+        setAlert(
+            "You must generate or input key before operation start!",
+        );
+        return setTimeout(removeAlert, 3000);
+      }
+
+      const publicKey = JSON.parse(key).publicKey;
 
       const message = $("#input").val();
       if (publicKey && message) {
@@ -94,7 +124,10 @@ $(document).ready(() => {
           operation: "en",
         });
       }
-      return alert("You must provide public key and data for encryption!");
+      setAlert(
+          "You must generate or input key correctly before operation start!",
+      );
+      return setTimeout(removeAlert, 3000);
     }
     if (operationSelect.val() === "dec") {
       const { privateKey, mod, multiplier } = JSON.parse(

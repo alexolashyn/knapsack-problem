@@ -66,7 +66,7 @@ const seqValidation = (seq) => {
 const modValidation = (mod, seq) => {
   const sum = seq.reduce((a, b) => a + b, 0);
   if (mod <= sum) {
-    throw new Error("Provided must must be bigger than sum of sequence!");
+    throw new Error("Provided mod-value must be bigger than sum of sequence!");
   }
 };
 

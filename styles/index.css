@@ -6,6 +6,22 @@ body {
   background-color: #efefef;
 }
 
+.alert {
+  position: absolute;
+  background-color: #bd564e;
+  width: 100%;
+  top:1rem;
+  left: 0;
+}
+
+.alert div {
+  margin: 1rem;
+}
+
+.success-alert {
+  background-color: #56796E;
+}
+
 textarea{
   border-radius: 1rem;
   border: none;
